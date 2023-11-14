@@ -16,14 +16,12 @@ window.addEventListener('load', () => {
       navigator.geolocation.getCurrentPosition((position) => {
         long = position.coords.longitude;
         lat = position.coords.latitude;
-        console.log(long, lat);
 
         const api = `https://api.weatherapi.com/v1/current.json?key=${apiKey}%20&q=${lat},${long}&lang=sv&aqi=yes`;
 
         fetch(api)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const { temp_c, temp_f, is_day } = data.current;
             const { name } = data.location;
             const { text, icon } = data.current.condition;
@@ -49,7 +47,14 @@ window.addEventListener('load', () => {
       });
     }
   }
+  function pushTime() {
+    const locationTime = document.querySelector('.location-time');
+    const date = new Date();
+    const time = date.toTimeString().split(' ')[0];
+    locationTime.textContent = time;
+  }
   fetchData();
-
+  pushTime();
+  setInterval(pushTime, 1000);
   setInterval(fetchData, 1000 * 60);
 });
