@@ -16,8 +16,9 @@ window.addEventListener('load', () => {
     navigator.geolocation.getCurrentPosition((position) => {
       long = position.coords.longitude;
       lat = position.coords.latitude;
+      console.log(long, lat);
 
-      const api = `https://api.weatherapi.com/v1/current.json?key=${apiKey}%20&q=${lat},${long}&aqi=no`;
+      const api = `https://api.weatherapi.com/v1/current.json?key=${apiKey}%20&q=${lat},${long}&lang=sv&aqi=yes`;
 
       fetch(api)
         .then((response) => response.json())
@@ -25,31 +26,32 @@ window.addEventListener('load', () => {
           console.log(data);
           const { temp_c, temp_f, is_day } = data.current;
           const { name } = data.location;
-          const { text } = data.current.condition;
+          const { text, icon } = data.current.condition;
 
           //Set DOM elements from API-values
           temperatureDegree.textContent =
-            temperatureType.textContent === 'C' ? temp_c : temp_f;
+            temperatureType.textContent === 'C' ? temp_c + '°' : temp_f + '°';
           locationTimezone.textContent = name;
           temperatureDescription.textContent = text;
+          temperatureIcon.src = icon;
 
-          let isDay;
-          if ((data.current.condition.is_day = 1)) {
-            isDay = '_DAY';
-          } else {
-            isDay = '_NIGHT';
-          }
+          // let isDay;
+          // if ((data.current.condition.is_day = 1)) {
+          //   isDay = '_DAY';
+          // } else {
+          //   isDay = '_NIGHT';
+          // }
 
-          setIcons(text, document.querySelector('.icon'), isDay);
+          // setIcons(text, document.querySelector('.icon'), isDay);
 
           //Change temperature to Celsius/Fahrenheit
           degreeSection.addEventListener('click', () => {
             if (temperatureType.textContent === 'C') {
               temperatureType.textContent = 'F';
-              temperatureDegree.textContent = temp_f;
+              temperatureDegree.textContent = temp_f + '°';
             } else {
               temperatureType.textContent = 'C';
-              temperatureDegree.textContent = temp_c;
+              temperatureDegree.textContent = temp_c + '°';
             }
           });
         });
