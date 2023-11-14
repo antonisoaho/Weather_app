@@ -45,3 +45,9 @@ body {
 .temperature-description {
   font-size: 30px;
 }
+a {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  opacity: 0.5;
+}
